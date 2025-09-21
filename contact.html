@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>联系我们 - 渡物 Dimension</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/contact.js" defer></script>
+</head>
+
+<div class="logo-sticker">
+  <img src="assets/images/logo.png" alt="渡物 Dimension Logo">
+</div>
+
+<header class="site-header">
+  <div class="nav-container">
+
+    <!-- 导航菜单 -->
+    <nav class="nav-menu">
+	  <div class="nav-item">
+          <a href="welcome.html">首页</a>
+        </div>
+		
+      <div class="nav-item">
+        <a href="designs.html">设计</a>
+      </div>
+	  
+      <div class="nav-item dropdown">
+        <span><a href="categories.html">商品<a></span>
+        <div class="dropdown-content">
+          <a href="#">基础
+		  <img src="assets/images/1.png" alt="基础" class="menu-img">
+		  </a>
+          <a href="#">灯类
+		  <img src="assets/images/2.png" alt="灯类" class="menu-img">
+		  </a>
+          <a href="#">床类
+		  <img src="assets/images/3.png" alt="床类" class="menu-img">
+		  </a>
+          <a href="#">桌类
+		  <img src="assets/images/4.png" alt="桌类" class="menu-img">
+		  </a>
+          <a href="#">椅类
+		  <img src="assets/images/5.png" alt="椅类" class="menu-img">
+		  </a>
+		  <a href="#">凳类
+		  <img src="assets/images/6.png" alt="凳类" class="menu-img">
+		  </a>
+		  <a href="#">沙发
+		  <img src="assets/images/7.png" alt="沙发" class="menu-img">
+		  </a>
+		  <a href="#">柜类
+		  <img src="assets/images/8.png" alt="柜类" class="menu-img">
+		  </a>
+		  <a href="#">架类
+		  <img src="assets/images/9.png" alt="架类" class="menu-img">
+		  </a>
+		  <a href="#">装饰
+		  <img src="assets/images/10.png" alt="装饰" class="menu-img">
+		  </a>
+		  <a href="#">组合
+		  <img src="assets/images/11.png" alt="组合" class="menu-img">
+		  </a>
+		  <a href="#">其他
+		  <img src="assets/images/12.png" alt="其他" class="menu-img">
+		  </a>
+        </div>
+      </div>
+
+      <div class="nav-item search">
+        <input type="text" placeholder="搜索商品..." />
+      </div>
+
+      <div class="nav-item">
+        <a href="settings.html">设置</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="user.html">个人中心</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="contact.html" style="color: var(--primary); font-weight: 600;">联系我们</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<body>
+  
+  <div class="nav-spacer"></div>
+  <main class="container">
+    <h1 class="function_title">联系我们</h1>
+
+    <form class="form-card" id="contactForm">
+      <label>
+        邮箱
+        <input type="email" id="email" placeholder="请输入您的邮箱" required>
+      </label>
+
+      <label>
+        主题
+        <input type="text" id="subject" placeholder="请输入主题" required>
+      </label>
+
+      <label>
+        内容
+        <textarea id="message" rows="6" placeholder="请输入您的具体需求或反馈..." required></textarea>
+      </label>
+
+      <button type="submit" class="btn">发送</button>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 渡物 Dimension. 保留所有权利。</p>
+  </footer>
+</body>
+
+</html>
