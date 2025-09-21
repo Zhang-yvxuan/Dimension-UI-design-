@@ -1,0 +1,390 @@
+/* =========================
+   1. Design Tokens（可改动区，全局变量）
+   ========================= */
+:root{
+  /* 布局/尺寸 */
+  --max-container-width: 900px;   /* 改这个能放大/缩小卡片 */
+  --container-padding: 2rem;
+  --gap: 1rem;
+
+  /* 视觉/色彩 */
+  --page-bg: var(--color2, #dad8d8);
+  --text: var(--color1, #33342f);
+  --muted: var(--color5, #bfb6a7);
+  --card-bg: var(--color4, #fffae6);
+  --border: var(--color6, #5a5a5a);
+
+  /* 主色（按钮、链接） */
+  --primary: var(--color3, #f0da5a);
+  --primary-600: var(--color5, #bfb6a7);
+
+  /* 形状/阴影/字体 */
+  --radius: 0.75rem;
+  --shadow: 0 8px 24px rgba(90, 90, 90, 0.08);
+  --font-stack: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --base-font-size: 16px;
+
+  /* 五种主视觉颜色：1：深橄榄绿（字体）2：米白（背景）3：金黄（点缀）4：肤白5：深米 */
+  --color1: #33342f; 
+  --color2: #d3ccc1;
+  --color3: #4d4535;
+  --color4: #fffae6;
+  --color5: #bfb6a7;
+  /* 新增颜色 */
+  --color6: #5a5a5a; /* 深灰，用于边框 */
+  --color7: #e0e0e0; /* 浅灰，用于输入框 */
+}
+/* =========================
+   1.1. 响应式修改页面
+   ========================= */
+@media (min-width: 2000px){
+  :root{ --max-container-width: 1400px } /* 大屏时放大容器 */
+}
+
+/* =========================
+   2. Reset + Base（重置与基础）
+   ========================= */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:var(--font-stack);font-size:var(--base-font-size);color:var(--text);background:var(--page-bg);line-height:1.6}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+
+/* =========================
+   3. Logo 贴纸
+   ========================= */
+.logo-sticker {
+  position: fixed;
+  height: 3cm;
+  width: 6cm;
+  z-index: 200;
+}
+.logo-sticker img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* =========================
+   4. 固定顶部导航栏
+   ========================= */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;
+  justify-content: flex-start;
+}
+
+.logo .brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-right: 0.5rem;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-start;
+  margin-left: 55.5rem;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.nav-item a {
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-item a:hover {
+  color: var(--primary);
+}
+
+/* 下拉菜单 */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--card-bg);
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.dropdown-content a {
+  background: var(--color4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.8rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+.menu-img {
+  width: 24px;
+  height: 24px;
+  margin-left: 12px;
+}
+.dropdown-content a:hover {
+  background: var(--primary);
+  color: #fff;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* 搜索框 */
+.nav-item.search input {
+  width: 200px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: 0.2s;
+  background: var(--color7);
+}
+.nav-item.search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(240, 218, 90, 0.12);
+}
+
+/* 导航空白占位 */
+.nav-spacer {
+  height: 100px;
+  background: #2e2e2e;
+}
+
+/* --- Quick Fix: 强制横向显示 --- */
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.nav-item > a, .nav-item > span {
+  display: inline-block;
+  white-space: nowrap;
+}
+.nav-item.search {
+  flex: 0 0 auto;
+}
+.nav-item.search input {
+  width: 220px;
+  max-width: 40vw;
+  box-sizing: box-border;
+}
+.dropdown-content a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-menu > * {
+  flex-shrink: 0;
+}
+
+/* =========================
+   4. 通用页脚
+   ========================= */
+.site-footer{
+  text-align:center;
+  padding:1rem;
+  background: var(--color1);
+  color: var(--color4);
+  font-size:0.9rem;
+}
+
+/* =========================
+   5. 功能页标题
+   ========================= */
+.function_title{
+  text-align:center;
+  padding:1rem;
+  color: var(--color1);
+  font-size:3rem;
+}
+
+/* =========================
+   6. 页面：欢迎页 / 首页
+   ========================= */
+.welcome_bg-video{
+  position:absolute;
+  top:0;left:0;width:100%;height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+
+.welcome_card{
+  position:relative;
+  height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  text-align:center; 
+}
+
+.welcome_card .overlay{
+  background: rgba(255, 255, 255, 0.65);
+  padding:2rem;
+  border-radius:1rem;
+  backdrop-filter:blur(10px);
+}
+
+/* 品牌 */
+.welcome_brand{font-size:2.4rem;font-weight:700;color: var(--color3)}
+
+/* 英文品牌 */
+.welcome_brand span{font-size:1.2rem;color: var(--color5)}
+
+/* 愿景 */
+.welcome_vision{margin:1rem 0;font-size:1.2rem;color: var(--color5)}
+
+/* 计数器 */
+.welcome_counter{margin:1rem 0;color: var(--color1)}
+
+/* 登录/注册操作区 */
+.welcomelogin_actions{margin:1.5rem 0;display:flex;gap:1rem;justify-content:center}
+
+/* 通用按钮控件！！！ */
+.btn{
+  padding:0.6rem 1.2rem;
+  border-radius:8px; 
+  font-weight:600;
+  background:var(--color3);
+  color:var(--color7);
+  transition:all .3s;
+}
+.btn:hover{background: var(--color5);color:#000000}
+/* 按钮（描边效果） */
+.btn-outline{
+  background:var(--color6);
+  border:2px solid var(--color3);
+  color: var(--color3);
+}
+.btn-outline:hover{ background: var(--color3); color: var(--color1) }
+/* “跳转页面部分”控件 */
+.scroll-down{margin-top:1.5rem}
+.scroll-down a{color: var(--color3);font-weight:500}
+
+/* 主体容器控件 */
+.container{max-width:900px;margin:0 auto;padding:2rem}
+.container section{margin-bottom:3rem}
+.container h2{margin-bottom:0.8rem;font-size:1.6rem;color: var(--color3)}
+
+/* 示例图片 */
+.index_sample-img{max-width:100%;border-radius:10px;margin-top:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+
+/* =========================
+   7. 组件：表单卡片
+   ========================= */
+.form-card{
+  width:100%;
+  background: var(--card-bg);
+  padding:calc(var(--gap) * 1.2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap: var(--gap);
+  border:1px solid var(--border);
+  z-index:100;
+}
+
+/* label + input */
+.form-card label{
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+  font-size:0.95rem;
+  color: var(--muted);
+}
+.form-card input[type="text"],
+.form-card input[type="password"],
+.form-card input[type="email"]{
+  padding:0.6rem 0.8rem;
+  border:1px solid var(--border);
+  border-radius:0.5rem;
+  background: var(--color7);
+  outline: none;
+  transition: box-shadow .12s, border-color .12s;
+}
+
+/* 输入框 focus 高亮 */
+.form-card input:focus{
+  box-shadow:0 0 0 4px rgba(240, 218, 90, 0.12);
+  border-color: var(--primary);
+}
+
+/* 状态类 */
+.is-disabled{ opacity:0.6; cursor:not-allowed; pointer-events:none }
+
+/* =========================
+   8. Utilities（小工具类）
+   ========================= */
+.u-mt-1{ margin-top:0.5rem }
+.u-mt-2{ margin-top:1rem }
+.u-mt-3{ margin-top:1.5rem }
+
+.text-center{ text-align:center }
+
+.flex{ display:flex }
+.flex-col{ display:flex; flex-direction:column }
+.gap-1{ gap:0.5rem }
+.gap-2{ gap:1rem }
+
+/* =========================
+   9联系我们页面
+   ========================= */
+
+/* textarea 与 input 保持一致 */
+.form-card textarea {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--color7);
+  outline: none;
+  resize: vertical;
+  min-height: 150px;
+  transition: box-shadow .12s, border-color .12s;
+}
+
+.form-card textarea:focus {
+  box-shadow: 0 0 0 4px rgba(240, 218, 90, 0.12);
+  border-color: var(--primary);
+}
+
+/* 提交按钮独占一行，居中 */
+.form-card button[type="submit"] {
+  align-self: center;
+  margin-top: 1rem;
+  min-width: 120px;
+  background: var(--color3);
+  border: none;
+  border-radius: var(--radius);
+}
+.form-card button[type="submit"]:hover {
+  background: var(--color5);
+}
+
