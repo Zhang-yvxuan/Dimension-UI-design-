@@ -24,13 +24,12 @@
   --font-stack: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --base-font-size: 16px;
 
-  /* 五种主视觉颜色：1：深橄榄绿（字体）2：米白（背景）3：金黄（点缀）4：肤白5：深米 */
+  /* 七种主视觉颜色：1：深橄榄绿（字体）2：米白（背景）3：金黄（点缀）4：肤白5：深米 */
   --color1: #33342f; 
   --color2: #d3ccc1;
   --color3: #4d4535;
   --color4: #fffae6;
   --color5: #bfb6a7;
-  /* 新增颜色 */
   --color6: #5a5a5a; /* 深灰，用于边框 */
   --color7: #e0e0e0; /* 浅灰，用于输入框 */
 }
@@ -54,14 +53,47 @@ button,input,textarea,select{font:inherit}
    ========================= */
 .logo-sticker {
   position: fixed;
-  height: 3cm;
-  width: 6cm;
+  margin-top:5px;
+  margin-left:5px;
+  height: 4cm;
+  width: 9cm;
   z-index: 200;
 }
 .logo-sticker img {
-  width: 100%;
+  width: 90%;
   height: auto;
   object-fit: contain;
+}
+
+.top-right-img {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px; /* 调整图片宽度 */
+    height: 60px;
+    z-index: 200; /* 确保图片在其他元素上方 */
+}
+.top-right-img img {
+    width: auto;
+    height: 60px;
+    object-fit: contain; /* 保持图片比例 */
+    display: block;
+}
+
+.webbg{
+    position: fixed;
+    bottom: 250px;
+    right: 0;
+    width: 800px; /* 调整图片宽度 */
+    height: 800px;
+    z-index: 0; /* 确保图片在其他元素上方 */
+}
+.webbg img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity:0.2;
+    object-fit: contain; /* 保持图片比例 */
 }
 
 /* =========================
@@ -76,18 +108,10 @@ button,input,textarea,select{font:inherit}
   background: var(--card-bg);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 100;
-  display: flex;
-  align-items: center;
-  padding: 0 2rem;
 }
 
 .nav-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0;
-  justify-content: flex-start;
+  height:60px
 }
 
 .logo .brand {
@@ -99,14 +123,11 @@ button,input,textarea,select{font:inherit}
 
 .nav-menu {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   gap: 2rem;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  justify-content: flex-start;
-  margin-left: 55.5rem;
-  padding: 0;
+  justify-content: center;
+  align-items: center; 
+  height: 100%;
+  width: 100%;
 }
 
 .nav-item {
@@ -135,6 +156,7 @@ button,input,textarea,select{font:inherit}
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border-radius: 0.5rem;
   overflow: hidden;
+  z-index: 100;
 }
 .dropdown-content a {
   background: var(--color4);
@@ -206,6 +228,19 @@ button,input,textarea,select{font:inherit}
 .nav-menu > * {
   flex-shrink: 0;
 }
+
+/* 音乐按钮 */
+.nav-item .music-toggle {
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  min-width: 40px;
+  text-align: center;
+}
+.nav-item .music-toggle.active {
+  background: var(--primary);
+  color: #fff;
+}
+
 
 /* =========================
    4. 通用页脚
