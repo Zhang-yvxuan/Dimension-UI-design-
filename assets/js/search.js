@@ -8,4 +8,4 @@ document.querySelector('.nav-item.search input').addEventListener('keypress', fu
       // window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     }
   }
-});ss
+});
