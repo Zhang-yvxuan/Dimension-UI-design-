@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>用户 - 渡物 Dimension</title>
+  <title>当前产品 - 渡物 Dimension</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -80,7 +80,7 @@
       </div>
 
       <div class="nav-item">
-        <a href="user.html"  style="color: var(--primary); font-weight: 600;">个人中心</a>
+        <a href="user.html">个人中心</a>
       </div>
 
       <div class="nav-item">
@@ -96,67 +96,6 @@
 <body>
   
   <div class="nav-spacer"></div>
-
-<div class="container">
-    <section>
-      <h2>个人中心</h2>
-      <div class="form-card" id="user-info">
-        <script>
-          // 页面加载时检查登录状态并显示用户信息
-          window.onload = function() {
-            const user = JSON.parse(localStorage.getItem("user") || "null");
-            const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-            if (!user || isLoggedIn !== "true") {
-              alert("请先登录");
-              window.location.href = "login.html";
-            } else {
-              document.getElementById("user-info").innerHTML = `
-                <label>
-                  用户名:
-                  <input type="text" id="username" value="${user.username}" class="u-mt-1">
-                </label>
-                <button class="btn u-mt-2" id="save-username">保存用户名</button>
-                <label class="u-mt-2">
-                  新密码:
-                  <input type="text" id="new-password" class="u-mt-1">
-                </label>
-                <button class="btn u-mt-2" id="save-password">保存密码</button>
-                <button class="btn u-mt-2" id="logout-btn">退出登录</button>
-              `;
-
-              // 保存用户名
-              document.getElementById("save-username").addEventListener("click", function() {
-                const newUsername = document.getElementById("username").value.trim();
-                if (newUsername && newUsername !== user.username) {
-                  user.username = newUsername;
-                  localStorage.setItem("user", JSON.stringify(user));
-                  alert("用户名已更新");
-                }
-              });
-
-              // 保存密码
-              document.getElementById("save-password").addEventListener("click", function() {
-                const newPassword = document.getElementById("new-password").value.trim();
-                if (newPassword) {
-                  user.password = newPassword;
-                  localStorage.setItem("user", JSON.stringify(user));
-                  alert("密码已更新");
-                }
-              });
-
-              // 退出登录
-              document.getElementById("logout-btn").addEventListener("click", function() {
-                localStorage.setItem("isLoggedIn", "false");
-                alert("已退出登录");
-                window.location.href = "login.html";
-              });
-            }
-          };
-        </script>
-      </div>
-    </section>
-  </div>
 
 
   <footer class="site-footer">

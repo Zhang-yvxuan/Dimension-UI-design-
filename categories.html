@@ -6,11 +6,48 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>商品分类 - 渡物 Dimension</title>
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* 附加样式：折叠列表 */
+    .category-section { margin-bottom: 2rem; }
+    .collapsible { 
+      background-color: var(--card-bg); 
+      border-radius: var(--radius); 
+      padding: 1rem; 
+      cursor: pointer; 
+      margin-bottom: 0.5rem; 
+    }
+    .collapsible-content { 
+      display: none; 
+      padding: 0 1rem 1rem; 
+    }
+    .collapsible-content.active { display: block; }
+    .product-list { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .product-card {z-index:0; flex: 1 1 30%; text-align: center; }
+    .product-card img { max-width: 100%; height: auto; object-fit: cover; }
+    .expand-btn { 
+      background: var(--primary); 
+      border: none; 
+      padding: 0.5rem 1rem; 
+      border-radius: var(--radius); 
+      color: var(--color7); 
+      cursor: pointer; 
+    }
+    .expand-btn:hover { background: var(--color5); }
+  </style>
 </head>
 
 <div class="logo-sticker">
   <img src="assets/images/logo.png" alt="渡物 Dimension Logo">
 </div>
+
+<div class="top-right-img">
+    <img src="assets/images/right_nav.png" alt="top right image">
+</div>
+
+<!-- <div class="webbg">
+    <img src="assets/images/bg001.png" alt="bg">
+</div> -->
 
 <header class="site-header">
   <div class="nav-container">
@@ -28,40 +65,40 @@
       <div class="nav-item dropdown">
         <span><a href="categories.html"  style="color: var(--primary); font-weight: 600;">商品<a></span>
         <div class="dropdown-content">
-          <a href="#">基础
+          <a href="categories.html#基础">基础
 		  <img src="assets/images/1.png" alt="基础" class="menu-img">
 		  </a>
-          <a href="#">灯类
+          <a href="categories.html#灯类">灯类
 		  <img src="assets/images/2.png" alt="灯类" class="menu-img">
 		  </a>
-          <a href="#">床类
+          <a href="categories.html#床类">床类
 		  <img src="assets/images/3.png" alt="床类" class="menu-img">
 		  </a>
-          <a href="#">桌类
+          <a href="categories.html#桌类">桌类
 		  <img src="assets/images/4.png" alt="桌类" class="menu-img">
 		  </a>
-          <a href="#">椅类
+          <a href="categories.html#椅类">椅类
 		  <img src="assets/images/5.png" alt="椅类" class="menu-img">
 		  </a>
-		  <a href="#">凳类
+		  <a href="categories.html#凳类">凳类
 		  <img src="assets/images/6.png" alt="凳类" class="menu-img">
 		  </a>
-		  <a href="#">沙发
+		  <a href="categories.html#沙发">沙发
 		  <img src="assets/images/7.png" alt="沙发" class="menu-img">
 		  </a>
-		  <a href="#">柜类
+		  <a href="categories.html#柜类">柜类
 		  <img src="assets/images/8.png" alt="柜类" class="menu-img">
 		  </a>
-		  <a href="#">架类
+		  <a href="categories.html#架类">架类
 		  <img src="assets/images/9.png" alt="架类" class="menu-img">
 		  </a>
-		  <a href="#">装饰
+		  <a href="categories.html#装饰">装饰
 		  <img src="assets/images/10.png" alt="装饰" class="menu-img">
 		  </a>
-		  <a href="#">组合
+		  <a href="categories.html#组合">组合
 		  <img src="assets/images/11.png" alt="组合" class="menu-img">
 		  </a>
-		  <a href="#">其他
+		  <a href="categories.html#其他">其他
 		  <img src="assets/images/12.png" alt="其他" class="menu-img">
 		  </a>
         </div>
@@ -82,144 +119,179 @@
       <div class="nav-item">
         <a href="contact.html">联系我们</a>
       </div>
+      <div class="nav-item">
+          <button class="music-toggle btn btn-outline">🎵</button>
+      </div>
     </nav>
   </div>
 </header>
 
 <body>
-  
+<!-- 导航占位，确保内容不被顶部导航遮挡 -->
   <div class="nav-spacer"></div>
 
-  <!-- 分类和商品展示区 -->
-  <main class="container flex" style="gap:2rem;">
-    <!-- 分类导航 -->
-    <aside id="category-list" style="min-width:160px;">
-      <!-- JS填充分类 -->
-    </aside>
-    <!-- 商品列表 -->
-    <section id="product-list" class="flex-col gap-2" style="flex:1;">
-      <!-- JS填充商品卡片 -->
-    </section>
+  <!-- 主内容区域 -->
+  <main class="container">
+    <h1 class="function_title">商品分类</h1> <!-- 页面标题 -->
+    <section id="product-categories"></section> <!-- 商品分类展示区域 -->
+    <div id="error-message" style="color: red; text-align: center;"></div> <!-- 错误信息显示区域 -->
   </main>
 
+  <!-- 页脚 -->
   <footer class="site-footer">
-    <p>&copy; 2025 渡物 Dimension. 保留所有权利。</p>
+    © 2025 渡物 Dimension. 保留所有权利。
   </footer>
 
-  <!-- 商品分类页面逻辑 -->
+ <!-- JavaScript 代码 -->
   <script>
-    // 分类映射（与下拉菜单顺序一致）
-    const CATEGORY_MAP = [
-      { key: "基础", prefix: ["BS-", "SU-"] },
-      { key: "灯类", prefix: ["LT-"] },
-      { key: "床类", prefix: ["BD-"] },
-      { key: "桌类", prefix: ["TB-"] },
-      { key: "椅类", prefix: ["CH-"] },
-      { key: "凳类", prefix: ["ST-"] },
-      { key: "沙发", prefix: ["SF-"] },
-      { key: "柜类", prefix: ["CB-"] },
-      { key: "架类", prefix: ["SH-"] },
-      { key: "装饰", prefix: ["DC-"] },
-      { key: "组合", prefix: ["SU-"] },
-      { key: "其他", prefix: ["OT-"] }
+    // 定义商品分类列表
+    const categories = [
+      "基础", "灯类", "床类", "桌类", "椅类", "凳类", 
+      "沙发", "柜类", "架类", "装饰", "组合", "其他"
     ];
 
-    // 商品数据缓存
-    let products = [];
-    let currentCategory = CATEGORY_MAP[0].key;
+    // 分类与 product_id 前缀的映射
+    const categoryMap = {
+      "基础": "BS",
+      "灯类": "LT",
+      "床类": "BD",
+      "桌类": "TB",
+      "椅类": "CH",
+      "凳类": "ST",
+      "沙发": "SF",
+      "柜类": "CB",
+      "架类": "SH",
+      "装饰": "DC",
+      "组合": "SU",
+      "其他": "OT"
+    };
 
-    // 获取商品数据
-    async function fetchProducts() {
-      try {
-        const res = await fetch('assets/data/designs.json');
-        const data = await res.json();
-        products = data.products || [];
-        renderCategories();
-        renderProducts(currentCategory);
-      } catch (e) {
-        document.getElementById('product-list').innerHTML = '<div>商品数据加载失败</div>';
-      }
-    }
+    // 占位数据
+    const fallbackProducts = [
+      { product_id: "BS-001", name: "COMPATTA地板", category: "基础" },
+      { product_id: "BS-002", name: "CEMENTORESINA地板", category: "基础" },
+      { product_id: "BS-003", name: "ANTICHE PATINE硅酸盐涂料", category: "基础" },
+      { product_id: "LT-001", name: "Gilda吊灯", category: "灯类" },
+      { product_id: "LT-002", name: "Pyrite吊灯", category: "灯类" },
+      { product_id: "LT-003", name: "DAWN吊灯", category: "灯类" }
+    ];
 
-    // 渲染分类导航
-    function renderCategories() {
-      const catList = document.getElementById('category-list');
-      catList.innerHTML = '<h3 style="margin-bottom:1rem;">分类</h3>' +
-        CATEGORY_MAP.map(cat =>
-          `<div class="category-item" style="margin-bottom:0.5rem;cursor:pointer;font-weight:${cat.key===currentCategory?'bold':'normal'};color:${cat.key===currentCategory?'var(--primary)':'inherit'}"
-            onclick="selectCategory('${cat.key}')">${cat.key}</div>`
-        ).join('');
-    }
+    // 获取并渲染数据
+    fetch('./assets/data/designs.json')
+      .then(response => {
+        if (!response.ok) throw new Error(`无法加载 designs.json，状态码：${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        console.log('JSON 数据加载成功:', data);
+        renderCategories(data.products);
+      })
+      .catch(error => {
+        document.getElementById('error-message').innerText = `错误：${error.message}（使用占位数据展示）`;
+        console.error('Fetch Error:', error);
+        renderCategories(fallbackProducts);
+      });
 
-    // 切换分类
-    window.selectCategory = function(key) {
-      currentCategory = key;
-      renderCategories();
-      renderProducts(key);
-    }
+    // 渲染分类的函数
+    function renderCategories(products) {
+      const productCategories = document.getElementById('product-categories');
+      productCategories.innerHTML = categories
+        .filter(category => products.some(p => p.product_id.startsWith(categoryMap[category])))
+        .map(category => {
+          const categoryProducts = products.filter(p => p.product_id.startsWith(categoryMap[category]));
+          const initialProducts = categoryProducts.slice(0, 3);
+          return `
+            <div id="${category}" class="category-section">
+              <div class="collapsible">
+                <h2>${category} (${initialProducts.length}/${
+                  categoryProducts.length
+                })</h2>
+                <button class="expand-btn" onclick="toggleExpand('${category}')">
+                  展开
+                </button>
+              </div>
+              <div class="collapsible-content" id="content-${category}">
+                <div class="product-list flex gap-2">
+                  ${initialProducts.map(product => `
+                    <div class="product-card form-card">
+                      <img src="./assets/images/${product.product_id.split('-')[0].toLowerCase()}/${product.product_id}.jpg" 
+                           alt="${product.name}" 
+                           class="index_sample-img" 
+                           onerror="this.src='./assets/images/placeholder.jpg'">
+                      <p>${product.name}</p>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
 
-    // 获取分类缩写
-    function getCategoryPrefix(productId) {
-      return productId.split('-')[0].toLowerCase();
-    }
-
-    // 获取商品图片路径
-    function getProductImage(productId) {
-      const prefix = getCategoryPrefix(productId);
-      return `assets/images/${prefix}/${productId}.png`;
-    }
-
-    // 获取分类图标编号
-    function getCategoryIcon(productId) {
-      for (let i = 0; i < CATEGORY_MAP.length; i++) {
-        if (CATEGORY_MAP[i].prefix.some(pre => productId.startsWith(pre))) {
-          return i + 1;
+      // 添加平滑滚动到锚点
+      window.addEventListener('hashchange', () => {
+        const category = window.location.hash.slice(1);
+        if (category && document.getElementById(category)) {
+          document.getElementById(category).scrollIntoView({ behavior: 'smooth' });
         }
+      });
+      if (window.location.hash) {
+        const category = window.location.hash.slice(1);
+        document.getElementById(category)?.scrollIntoView({ behavior: 'smooth' });
       }
-      return 12; // 其他
     }
 
-    // 渲染商品列表
-    function renderProducts(categoryKey, searchText='') {
-      const cat = CATEGORY_MAP.find(c => c.key === categoryKey);
-      let filtered = products.filter(p =>
-        cat.prefix.some(pre => p.product_id.startsWith(pre))
-      );
-      if (searchText) {
-        filtered = filtered.filter(p =>
-          p.name.includes(searchText) || (p.description && p.description.includes(searchText))
-        );
-      }
-      const list = document.getElementById('product-list');
-      if (filtered.length === 0) {
-        list.innerHTML = '<div>暂无商品</div>';
-        return;
-      }
-      list.innerHTML = filtered.map(p => `
-        <div class="form-card" style="display:flex;flex-direction:row;align-items:center;gap:1rem;">
-          <div style="width:60px;height:60px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-            <img src="${getProductImage(p.product_id)}"
-                 alt="${p.name}"
-                 style="width:48px;height:48px;object-fit:contain;"
-                 onerror="this.onerror=null;this.src='assets/images/${getCategoryIcon(p.product_id)}.png';">
+    // 切换展开/收起函数
+    function toggleExpand(category) {
+      const content = document.getElementById(`content-${category}`);
+      const allProducts = Array.from(document.querySelectorAll(`#content-${category} .product-card`)).length === 3;
+      const button = content.previousElementSibling.querySelector('.expand-btn');
+
+      if (allProducts) {
+        // 展开所有商品
+        const categoryProducts = JSON.parse(localStorage.getItem(`products-${category}`)) || [];
+        if (categoryProducts.length === 0) {
+          fetch('./assets/data/designs.json')
+            .then(response => response.json())
+            .then(data => {
+              const all = data.products.filter(p => p.product_id.startsWith(categoryMap[category]));
+              localStorage.setItem(`products-${category}`, JSON.stringify(all));
+              renderExpanded(category, all);
+            });
+        } else {
+          renderExpanded(category, categoryProducts);
+        }
+        button.textContent = '收起';
+      } else {
+        // 收起，仅显示前三个
+        content.innerHTML = `
+          <div class="product-list flex gap-2">
+            ${Array.from(content.querySelectorAll('.product-card')).slice(0, 3).map(card => card.outerHTML).join('')}
           </div>
-          <div style="flex:1;">
-            <div style="font-weight:600;font-size:1.1rem;">${p.name}</div>
-            <div style="color:var(--muted);font-size:0.95rem;">${p.designer} | ${p.price}</div>
-            <div style="font-size:0.9rem;color:#666;">${p.description}</div>
-          </div>
+        `;
+        button.textContent = '展开';
+      }
+    }
+
+    // 渲染展开的内容
+    function renderExpanded(category, products) {
+      const content = document.getElementById(`content-${category}`);
+      content.innerHTML = `
+        <div class="product-list flex gap-2">
+          ${products.map(product => `
+            <div class="product-card form-card">
+              <img src="./assets/images/${product.product_id.split('-')[0].toLowerCase()}/${product.product_id}.jpg" 
+                   alt="${product.name}" 
+                   class="index_sample-img" 
+                   onerror="this.src='./assets/images/placeholder.jpg'">
+              <p>${product.name}</p>
+            </div>
+          `).join('')}
         </div>
-      `).join('');
+      `;
+      content.classList.add('active');
     }
-
-    // 搜索功能
-    document.querySelector('.nav-item.search input').addEventListener('input', function(e){
-      renderProducts(currentCategory, e.target.value.trim());
-    });
-
-    // 页面加载
-    fetchProducts();
   </script>
+      <script src="assets/js/search.js"></script>
+    <script src="assets/js/music.js"></script>
 </body>
-
 </html>

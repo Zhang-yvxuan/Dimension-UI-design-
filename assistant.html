@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI助手 - 渡物 Dimension</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .chat-container {
+      max-height: 60vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--gap);
+      margin-bottom: var(--gap);
+      background: var(--color7);
+    }
+    .message {
+      margin-bottom: var(--gap);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      max-width: 80%;
+    }
+    .message.user {
+      background: var(--primary);
+      color: #fff;
+      margin-left: auto;
+    }
+    .message.ai {
+      background: var(--card-bg);
+      color: var(--text);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 300;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+  </style>
+</head>
+
+<div class="logo-sticker">
+  <img src="assets/images/logo.png" alt="渡物 Dimension Logo">
+</div>
+
+<div class="top-right-img">
+    <img src="assets/images/right_nav.png" alt="top right image">
+</div>
+
+<header class="site-header">
+  <div class="nav-container">
+
+    <!-- 导航菜单 -->
+    <nav class="nav-menu">
+	  <div class="nav-item">
+          <a href="welcome.html">首页</a>
+        </div>
+		
+      <div class="nav-item">
+        <a href="designs.html">设计</a>
+      </div>
+	  
+      <div class="nav-item dropdown">
+        <span><a href="categories.html"  style="color: var(--primary); font-weight: 600;">商品<a></span>
+        <div class="dropdown-content">
+          <a href="categories.html#基础">基础
+		  <img src="assets/images/1.png" alt="基础" class="menu-img">
+		  </a>
+          <a href="categories.html#灯类">灯类
+		  <img src="assets/images/2.png" alt="灯类" class="menu-img">
+		  </a>
+          <a href="categories.html#床类">床类
+		  <img src="assets/images/3.png" alt="床类" class="menu-img">
+		  </a>
+          <a href="categories.html#桌类">桌类
+		  <img src="assets/images/4.png" alt="桌类" class="menu-img">
+		  </a>
+          <a href="categories.html#椅类">椅类
+		  <img src="assets/images/5.png" alt="椅类" class="menu-img">
+		  </a>
+		  <a href="categories.html#凳类">凳类
+		  <img src="assets/images/6.png" alt="凳类" class="menu-img">
+		  </a>
+		  <a href="categories.html#沙发">沙发
+		  <img src="assets/images/7.png" alt="沙发" class="menu-img">
+		  </a>
+		  <a href="categories.html#柜类">柜类
+		  <img src="assets/images/8.png" alt="柜类" class="menu-img">
+		  </a>
+		  <a href="categories.html#架类">架类
+		  <img src="assets/images/9.png" alt="架类" class="menu-img">
+		  </a>
+		  <a href="categories.html#装饰">装饰
+		  <img src="assets/images/10.png" alt="装饰" class="menu-img">
+		  </a>
+		  <a href="categories.html#组合">组合
+		  <img src="assets/images/11.png" alt="组合" class="menu-img">
+		  </a>
+		  <a href="categories.html#其他">其他
+		  <img src="assets/images/12.png" alt="其他" class="menu-img">
+		  </a>
+        </div>
+      </div>
+
+      <div class="nav-item search">
+        <input type="text" placeholder="搜索商品..." />
+      </div>
+
+      <div class="nav-item">
+        <a href="settings.html">设置</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="user.html">个人中心</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="contact.html">联系我们</a>
+      </div>
+      <div class="nav-item">
+          <button class="music-toggle btn btn-outline">🎵</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<body>
+<!-- 导航占位，确保内容不被顶部导航遮挡 -->
+  <div class="nav-spacer"></div>
+  <div class="container">
+    <h1 class="function_title">AI助手</h1>
+    <div class="form-card">
+      <div class="chat-container" id="chatContainer"></div>
+      <div class="flex flex-col gap-1">
+        <label>
+          <span>输入消息</span>
+          <input type="text" id="userInput" placeholder="输入您的消息...">
+        </label>
+        <button type="submit" class="btn" onclick="sendMessage()">发送</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="imageModal">
+    <img id="modalImage" src="" alt="放大图片">
+  </div>
+  <footer class="site-footer">
+    <p>© 2025 渡物 Dimension. 保留所有权利。</p>
+  </footer>
+  <script>
+    // 固定角色提示词
+    const systemPrompt = "你是渡物Dimension的AI助手，专注于提供家居设计建议，风格简洁、现代，回答专业且具象化，帮助用户优化室内布局与装饰选择。";
+    let messages = [{ role: "system", content: systemPrompt }];
+
+    // 发送消息
+    async function sendMessage() {
+      const userInput = document.getElementById('userInput').value.trim();
+      if (!userInput) return;
+
+      const chatContainer = document.getElementById('chatContainer');
+      const loadingElement = document.createElement('div');
+      loadingElement.id = 'loading';
+      loadingElement.style.display = 'block';
+      loadingElement.textContent = '加载中...';
+      chatContainer.appendChild(loadingElement);
+
+      // 显示用户消息
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'message user';
+      userMessageDiv.textContent = userInput;
+      chatContainer.appendChild(userMessageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // 添加到消息记录
+      messages.push({ role: "user", content: userInput });
+
+      // 清空输入框
+      document.getElementById('userInput').value = '';
+
+      // 调用DeepSeek API
+      try {
+        const response = await fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer sk-5667c8b26be74ec5904616e7638ffc1e' // 替换为实际API密钥
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: messages,
+            stream: false
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+
+        // 显示AI回复
+        const aiMessageDiv = document.createElement('div');
+        aiMessageDiv.className = 'message ai';
+        aiMessageDiv.textContent = formatMessage(aiResponse); // 使用formatMessage处理回复
+        chatContainer.appendChild(aiMessageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // 更新消息记录
+        messages.push({ role: "assistant", content: aiResponse });
+      } catch (error) {
+        console.error('API调用失败:', error);
+        const errorMessageDiv = document.createElement('div');
+        errorMessageDiv.className = 'message ai';
+        errorMessageDiv.textContent = `错误：${error.message || '网络或API问题，请检查密钥后重试。'}`;
+        chatContainer.appendChild(errorMessageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      } finally {
+        // 移除加载动画
+        if (loadingElement) {
+          loadingElement.remove();
+        }
+      }
+    }
+
+    // 格式化消息（复用script.js的逻辑）
+    function formatMessage(text) {
+      if (!text) return '';
+      let lines = text.split('\n');
+      let formattedLines = lines.map(line => {
+        line = line.replace(/\*\*(.*?)\*\*/g, '<span class="bold-text">$1</span>');
+        return line;
+      });
+      return formattedLines.join('<br>');
+    }
+
+    // 按Enter键发送消息
+    document.getElementById('userInput').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // 主题切换（复用script.js）
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const chatContainer = document.querySelector('.chat-container');
+      chatContainer.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.chat-container').classList.add('dark-mode');
+      }
+    });
+  </script>
+      <script src="assets/js/search.js"></script>
+    <script src="assets/js/music.js"></script>
+</body>
+</html>
